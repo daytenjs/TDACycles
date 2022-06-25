@@ -11,7 +11,10 @@
 #' dat <- datagen(50, 3)
 #' pairs(dat)
 datagen <- function(n=30, dim=2) {
-  dat <- tidyr::as_tibble(matrix(ncol = dim, nrow = n, NA))
+  dat <- tidyr::as_tibble(
+    matrix(ncol = dim, nrow = n, NA, dimnames=list(c(1:n),paste0("x",1:dim)))
+  )
+
   for(ii in 1:dim){
     dat[,ii] <- stats::runif(n, 0, 1)
   }
