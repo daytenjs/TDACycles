@@ -17,3 +17,5 @@ Imports:
     data.table,
     graphics,
     stats
+URL: https://github.com/daytenjs/TDACycles
+BugReports: https://github.com/daytenjs/TDACycles/issues
