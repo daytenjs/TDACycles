@@ -16,6 +16,15 @@ Imports:
     tidyr,
     data.table,
     graphics,
-    stats
+    stats,
+    TDA,
+    bigstatsr,
+    doParallel,
+    foreach,
+    tibble,
+    dplyr,
+    rlang
 URL: https://github.com/daytenjs/TDACycles
 BugReports: https://github.com/daytenjs/TDACycles/issues
+Depends: 
+    R (>= 2.10)
