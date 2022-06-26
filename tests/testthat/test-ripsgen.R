@@ -1,4 +1,4 @@
 test_that("multiplication works", {
   expect_equal(2 * 2, 4)
 })
-# TODO: Write the cycle-extract tests
+# TODO: Write the ripsgen tests

@@ -4,7 +4,7 @@
 \alias{ripsgen}
 \title{Generate Rips Complex for data}
 \usage{
-ripsgen(n = 30, dim = 2, dat = NA)
+ripsgen(n = 30, dim = 2, dat)
 }
 \arguments{
 \item{n}{Number of points to generate (required if "dat" is not supplied).}

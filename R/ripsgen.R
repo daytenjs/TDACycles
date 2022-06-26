@@ -11,10 +11,10 @@
 #' @examples
 #' rr <- ripsgen(50, 2)
 #' rr$diagram
-ripsgen <- function(n = 30, dim = 2, dat = NA) {
+ripsgen <- function(n = 30, dim = 2, dat) {
   # TODO: Add typing (https://github.com/moodymudskipper/typed) and error handling
 
-  if (is.na(dat)) {
+  if (missing(dat)) {
     dat <- datagen(n, dim)
   } else {
     dim <- dim(dat)[2]
@@ -38,7 +38,7 @@ ripsgen <- function(n = 30, dim = 2, dat = NA) {
     cycle_dim <- dim(rips_cycle[,1,])
     segments <- cbind(rips_cycle[,1,], rips_cycle[, 2, ])
     colnames(segments) <- c("x0", "y0", "x1", "y1")
-    pts_mat <- rbind(pts_mat, cbind(one[jj], segments)) # store [cycle_ix, x, y]
+    pts_mat <- rbind(pts_mat, cbind("cycle_ix"=one[jj], segments)) # store [cycle_ix, x, y]
   }
 
   return(
@@ -47,7 +47,7 @@ ripsgen <- function(n = 30, dim = 2, dat = NA) {
       diagram = DiagRips$diagram,
       births = DiagRips$birthLocation,
       deaths = DiagRips$deathLocation,
-      cycle_segments = pts_mat
+      cycle_segments = pts_mat %>% as.data.frame()
     )
   )
 }

@@ -23,7 +23,8 @@ Imports:
     foreach,
     tibble,
     dplyr,
-    rlang
+    rlang,
+    base
 URL: https://github.com/daytenjs/TDACycles
 BugReports: https://github.com/daytenjs/TDACycles/issues
 Depends: 

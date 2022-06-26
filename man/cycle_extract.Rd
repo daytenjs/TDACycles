@@ -4,7 +4,7 @@
 \alias{cycle_extract}
 \title{Extract cycles into a better format from ripsgen() function}
 \usage{
-cycle_extract(n = 30, dim = 2, diagram = NA, cycles = NA)
+cycle_extract(n = 30, dim = 2, diagram, cycles)
 }
 \arguments{
 \item{n}{Number of points to generate (required if "dat" is not supplied).}
@@ -14,14 +14,16 @@ data in a a unit square (required if "dat" is not supplied).}
 
 \item{diagram}{The Rips diagram as returned by ripsgen()$diagram.}
 
-\item{cycles}{The representative cycles as returned by ripsgen()$cycles.}
+\item{cycles}{The representative cycle_segments as returned by ripsgen()$cycle_segments.}
 }
 \value{
-something here
+Better formatted cycles
 }
 \description{
 Extract cycles into a better format from ripsgen() function
 }
 \examples{
-2+2
+require(dplyr)
+diagram <- diags \%>\% filter(run == 28)
+cycles <- cycs \%>\% filter(run == 28)
 }
