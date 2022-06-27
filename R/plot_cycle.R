@@ -1,6 +1,8 @@
 #' Plot a cycle on the supplied data given by the cycle segments
-#' @param data Random data from the experiment, must be only data coordinates (i.e., "x", "y", "z")
+#' @param data Random data from the experiment, must be only data coordinates
+#' (i.e., "x", "y", "z") along with an id for the cycle as the first column.
 #' @param ordered_cycles The ordered cycles provided by cycle_extract().
+#' @param plot_data Boolean to toggle plotting underlying data
 #' @return A plot
 #'
 #' @importFrom dplyr %>%
@@ -12,23 +14,36 @@
 #' @export
 #'
 #' @examples
+#' require(dplyr)
 #' rr <- ripsgen()
 #' plot_cycle(
 #'   data = rr$data,
-#'   ordered_cycles = cycle_extract(diagram = rr$diagram, cycles = rr$cycle_segments)
+#'   ordered_cycles = cycle_extract(
+#'     diagram = rr$diagram,
+#'     cycle_segments = rr$cycle_segments
+#'   )
 #' )
-plot_cycle <- function(data, ordered_cycles) {
+#'
+#' # you can also plot one cycle at a time if you loop the following appropriately
+#' cycle <- cycle_extract(
+#'   diagram = rr$diagram,
+#'   cycle_segments = rr$cycle_segments
+#' ) %>% filter(cycle_ix == 31)
+#'
+plot_cycle <- function(data, ordered_cycles, plot_data = TRUE) {
   if (missing(data) | missing(ordered_cycles)) {
     print("Missing data or cycle_segments or both. Plotting generic data placeholder.")
     rr <- ripsgen()
     data <- rr$data
-    ordered_cycles <- cycle_extract(diagram = rr$diagram, cycles = rr$cycle_segments)
+    ordered_cycles <- cycle_extract(diagram = rr$diagram, cycle_segments = rr$cycle_segments)
   }
 
-  plot(data)
+  if(plot_data){
+    plot(data)
+  }
   ocs <- ordered_cycles
-  for (jj in unique(ocs$cycle_ix)) {
-    cycle <- ocs %>% filter(.data$cycle_ix == jj)
+  for (jj in unique(ocs[,1])) {
+    cycle <- ocs[ocs[,1]==jj, ]
     n <- dim(cycle)[1]
     for (ii in 1:n) {
       v <- cycle[ii, ]
@@ -37,7 +52,7 @@ plot_cycle <- function(data, ordered_cycles) {
       } else {
         w <- cycle[ii + 1, ]
       }
-      segments(v[["x1"]], v[["x2"]], w[["x1"]], w[["x2"]], col = jj)
+      segments(v[, 2], v[, 3], w[, 2], w[, 3], col = jj)
     }
   }
   return(NA)

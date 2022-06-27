@@ -4,12 +4,15 @@
 \alias{plot_cycle}
 \title{Plot a cycle on the supplied data given by the cycle segments}
 \usage{
-plot_cycle(data, ordered_cycles)
+plot_cycle(data, ordered_cycles, plot_data = TRUE)
 }
 \arguments{
-\item{data}{Random data from the experiment, must be only data coordinates (i.e., "x", "y", "z")}
+\item{data}{Random data from the experiment, must be only data coordinates
+(i.e., "x", "y", "z") along with an id for the cycle as the first column.}
 
 \item{ordered_cycles}{The ordered cycles provided by cycle_extract().}
+
+\item{plot_data}{Boolean to toggle plotting underlying data}
 }
 \value{
 A plot
@@ -18,9 +21,20 @@ A plot
 Plot a cycle on the supplied data given by the cycle segments
 }
 \examples{
+require(dplyr)
 rr <- ripsgen()
 plot_cycle(
   data = rr$data,
-  ordered_cycles = cycle_extract(diagram = rr$diagram, cycles = rr$cycle_segments)
+  ordered_cycles = cycle_extract(
+    diagram = rr$diagram,
+    cycle_segments = rr$cycle_segments
+  )
 )
+
+# you can also plot one cycle at a time if you loop the following appropriately
+cycle <- cycle_extract(
+  diagram = rr$diagram,
+  cycle_segments = rr$cycle_segments
+) \%>\% filter(cycle_ix == 31)
+
 }

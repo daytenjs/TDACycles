@@ -30,15 +30,15 @@ ripsgen <- function(n = 30, dim = 2, dat) {
     library = "Dionysus", location = TRUE, printProgress = TRUE
   )
 
-  pts_mat <- matrix(NA, ncol=5, nrow=0)
-  one <- which(DiagRips[["diagram"]][, 1] == 1) #this allows to extract cycles
+  pts_mat <- matrix(NA, ncol = 5, nrow = 0)
+  one <- which(DiagRips[["diagram"]][, 1] == 1) # this allows to extract cycles
 
-  for (jj in seq(along = one)) { #per cycle
-    rips_cycle <- DiagRips[["cycleLocation"]][[one[jj]]] #extract cycle pts
-    cycle_dim <- dim(rips_cycle[,1,])
-    segments <- cbind(rips_cycle[,1,], rips_cycle[, 2, ])
+  for (jj in seq(along = one)) { # per cycle
+    rips_cycle <- DiagRips[["cycleLocation"]][[one[jj]]] # extract cycle pts
+    cycle_dim <- dim(rips_cycle[, 1, ])
+    segments <- cbind(rips_cycle[, 1, ], rips_cycle[, 2, ])
     colnames(segments) <- c("x0", "y0", "x1", "y1")
-    pts_mat <- rbind(pts_mat, cbind("cycle_ix"=one[jj], segments)) # store [cycle_ix, x, y]
+    pts_mat <- rbind(pts_mat, cbind("cycle_ix" = one[jj], segments)) # store [cycle_ix, x, y]
   }
 
   return(

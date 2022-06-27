@@ -3,7 +3,7 @@
 #' @param dim The underlying ambient dimension of the result, i.e., dim=2 yields
 #' data in a a unit square (required if "dat" is not supplied).
 #' @param diagram The Rips diagram as returned by ripsgen()$diagram.
-#' @param cycles The representative cycle_segments as returned by ripsgen()$cycle_segments.
+#' @param cycle_segments The representative cycle_segments as returned by ripsgen()$cycle_segments.
 #' @return Better formatted cycles
 #'
 #' @importFrom dplyr %>%
@@ -13,18 +13,25 @@
 #'
 #' @examples
 #' require(dplyr)
-#' diagram <- diags %>% filter(run == 28)
-#' cycles <- cycs %>% filter(run == 28)
+#' diagram <- diags %>%
+#'   filter(run == 28) %>%
+#'   select(-c(run, cycle_ix, npts))
+#'
+#' cycle_segments <- cycs %>%
+#'   filter(run == 28) %>%
+#'   select(-c(run, npts))
+#'
+#' cycle_extract(diagram, cycle_segments)
 #' @export
-cycle_extract <- function(n = 30, dim = 2, diagram, cycles) {
+cycle_extract <- function(diagram, cycle_segments, n = 30, dim = 2) {
   if (missing(diagram)) {
     diagram <- ripsgen()$diagram
   }
 
   diagram <- diagram[] %>% as.data.frame() # just in case still an S3 class
 
-  if (missing(cycles)) {
-    cycles <- ripsgen()$cycle_segments
+  if (missing(cycle_segments)) {
+    cycle_segments <- ripsgen()$cycle_segments
   }
 
   ordered_cycles <- matrix(NA, nrow = 0, ncol = (dim + 1))
@@ -33,10 +40,10 @@ cycle_extract <- function(n = 30, dim = 2, diagram, cycles) {
   one <- which(diagram$dim == 1)
 
   for (jj in seq(along = one)) {
-    cycle <- cycles %>%
+    cycle <- cycle_segments %>%
       filter(.data$cycle_ix == one[jj]) %>%
       select(.data$x0, .data$y0, .data$x1, .data$y1)
-    cycle$order <- 1:dim(cycle)[1] -1
+    cycle$order <- 1:dim(cycle)[1] - 1
 
     ordered_cycle <- matrix(NA, nrow = dim(cycle)[1], ncol = 2)
     ordered_cycle[1, ] <- cycle[1, 1:2] %>% unlist()
@@ -65,5 +72,5 @@ cycle_extract <- function(n = 30, dim = 2, diagram, cycles) {
 
     ordered_cycles <- rbind(ordered_cycles, cbind(one[jj], ordered_cycle))
   }
-  return(ordered_cycles %>% as.data.frame)
+  return(ordered_cycles %>% as.data.frame())
 }
